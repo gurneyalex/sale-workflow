@@ -22,7 +22,7 @@
 ##############################################################################
 {
     'name': "Sale line price properties based",
-    'version': '0.1',
+    'version': '1.0',
     'category': '',
     'author': "Agile Business Group,Odoo Community Association (OCA)",
     'website': 'http://www.agilebg.com',
@@ -41,6 +41,5 @@
     "test": [
         'test/sale_order.yml',
     ],
-    "active": False,
     "installable": True
 }
