@@ -43,18 +43,18 @@ class ProductProduct(orm.Model):
     }
 
 
-class product_template(orm.Model):
+class ProductTemplate(orm.Model):
     _inherit = "product.template"
 
     def _price_get(self, cr, uid, products, ptype='list_price', context=None):
         if context is None:
             context = {}
 
-        res = super(product_template, self)._price_get(
+        res = super(ProductTemplate, self)._price_get(
             cr, uid, products, ptype=ptype, context=context)
         if 'properties' in context:
             for product in products:
-                res = super(product_template, self)._price_get(
+                res = super(ProductTemplate, self)._price_get(
                     cr, uid, products, ptype=ptype, context=context)
                 if product.price_formula_id:
                     localdict = {
