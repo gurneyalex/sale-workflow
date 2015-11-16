@@ -22,8 +22,8 @@
 ##############################################################################
 {
     'name': "Sale line price properties based",
-    'version': '1.0',
-    'category': '',
+    'version': '8.0.1.0.0',
+    'category': 'Sales Management',
     'author': "Agile Business Group,Odoo Community Association (OCA)",
     'website': 'http://www.agilebg.com',
     'license': 'AGPL-3',
