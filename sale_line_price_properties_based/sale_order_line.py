@@ -30,11 +30,11 @@ class SaleOrderLine(models.Model):
     @api.onchange('property_ids')
     def price_property_ids_changed(self):
         prop_dict = {}
-        prop_ctx = self.env.context.copy()
-        if 'lang' in prop_ctx:
-            del prop_ctx['lang']
+        ctx = self.env.context.copy()
+        if 'lang' in ctx:
+            del ctx['lang']
         if self.product_id:
-            for prop in self.env['mrp.property'].with_context(prop_ctx).browse(
+            for prop in self.env['mrp.property'].with_context(ctx).browse(
                 [p.id for p in self.property_ids]
             ):
                 if prop.group_id.name in prop_dict:
@@ -43,14 +43,16 @@ class SaleOrderLine(models.Model):
                         _('Property of group %s already present')
                         % prop.group_id.name)
                 prop_dict[prop.group_id.name] = prop.value
-            self.price_unit = self.pool.get('product.pricelist').price_get(
-                self._cr, self._uid, [self.order_id.pricelist_id.id],
-                self.product_id.id, self.product_uom_qty or 1.0,
-                self.order_id.partner_id.id, {
+            ctx.update({
+                    'uos_id': self.product_uos.id,
                     'uom': self.product_uom.id,
                     'date': self.order_id.date_order,
-                    'properties': prop_dict,
-                })[self.order_id.pricelist_id.id]
+                    'properties': prop_dict})
+            self.price_unit = self.env['product.pricelist'].with_context(
+                ctx).price_get(
+                    self.product_id.id,
+                    self.product_uom_qty or 1.0,
+                    self.order_id.partner_id.id)[self.order_id.pricelist_id.id]
 
     def product_id_change(
         self, cr, uid, ids, pricelist, product_id, qty=0,
