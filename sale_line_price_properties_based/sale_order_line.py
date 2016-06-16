@@ -27,7 +27,7 @@ from openerp.exceptions import except_orm
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    @api.onchange('property_ids')
+    @api.onchange('property_ids', 'product_uos')
     def price_property_ids_changed(self):
         prop_dict = {}
         ctx = self.env.context.copy()
