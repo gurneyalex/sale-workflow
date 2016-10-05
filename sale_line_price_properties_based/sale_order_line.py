@@ -43,11 +43,11 @@ class SaleOrderLine(models.Model):
                         _('Property of group %s already present')
                         % prop.group_id.name)
                 prop_dict[prop.group_id.name] = prop.value
-            ctx.update({
-                    'uos_id': self.product_uos.id,
-                    'uom': self.product_uom.id,
-                    'date': self.order_id.date_order,
-                    'properties': prop_dict})
+            ctx.update({'uos_id': self.product_uos.id,
+                        'uom': self.product_uom.id,
+                        'date': self.order_id.date_order,
+                        'properties': prop_dict,
+                        })
             self.price_unit = self.env['product.pricelist'].with_context(
                 ctx).price_get(
                     self.product_id.id,
@@ -74,8 +74,9 @@ class SaleOrderLine(models.Model):
             property_group_pool = self.pool['mrp.property.group']
             group_to_empty_ids = property_group_pool.search(
                 cr, uid, [('draw_dynamically', '=', True)], context=context)
-            for group in property_group_pool.browse(
-                    cr, uid, group_to_empty_ids, context=context
-            ):
+            groups = property_group_pool.browse(
+                cr, uid, group_to_empty_ids, context=context
+            )
+            for group in groups:
                 res['value'][group.field_id.name] = None
         return res
