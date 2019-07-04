@@ -141,6 +141,12 @@ class SaleOrderLine(models.Model):
             and self.product_id.service_policy == 'delivered_manual'
             and self.product_id.service_tracking == 'task_new_project'
         )
+    
+    @api.multi
+    def _is_so_with_rate(self):
+        #returns TRUE is there is a rate product in the related SO, this will be used to maintain the fixed price usecase
+        products = self.order_id.order_line.mapped('product_id')
+        print("{}".format(products))
 
     @api.multi
     def _compute_invoice_status(self):
