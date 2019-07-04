@@ -146,10 +146,10 @@ class SaleOrderLine(models.Model):
     @api.multi
     def _is_so_with_rate(self):
         #returns TRUE is there is a rate product in the related SO, this will be used to maintain the fixed price usecase
-        products = self.order_id.order_line
-        for prod in products:
-            if prod.seniority_level_id:
-                print("RATE {}".format(prod.seniority_level_id))
+        lines = self.order_id.order_line
+        for line in lines:
+            if line.product_id.seniority_level_id:
+                print("RATE {}".format(line.product_id.seniority_level_id))
                 return True
         print("NO RATES")
         return False
