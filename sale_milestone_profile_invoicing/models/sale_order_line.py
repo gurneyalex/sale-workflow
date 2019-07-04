@@ -106,8 +106,9 @@ class SaleOrderLine(models.Model):
     def _compute_qty_delivered(self):
         """Change qantity delivered for line with a product milestone."""
         super()._compute_qty_delivered()
+        has_rate = self._is_so_with_rate()
         for line in self:
-            if line._is_linked_to_milestone_product():
+            if line._is_linked_to_milestone_product() and has_rate:
                 if line.price_unit:
                     line.qty_delivered = (
                         line.product_uom_qty
@@ -147,6 +148,7 @@ class SaleOrderLine(models.Model):
         #returns TRUE is there is a rate product in the related SO, this will be used to maintain the fixed price usecase
         products = self.order_id.order_line.mapped('product_id')
         print("{}".format(products))
+        return True
 
     @api.multi
     def _compute_invoice_status(self):
