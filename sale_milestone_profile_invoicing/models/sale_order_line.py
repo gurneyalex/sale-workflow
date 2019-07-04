@@ -106,9 +106,8 @@ class SaleOrderLine(models.Model):
     def _compute_qty_delivered(self):
         """Change qantity delivered for line with a product milestone."""
         super()._compute_qty_delivered()
-        #has_rate = self._is_so_with_rate()
         for line in self:
-            if line._is_linked_to_milestone_product(): #and has_rate:
+            if line._is_linked_to_milestone_product(): 
                 if line.price_unit:
                     line.qty_delivered = (
                         line.product_uom_qty
@@ -141,21 +140,10 @@ class SaleOrderLine(models.Model):
             self.product_id.type == 'service'
             and self.product_id.service_policy == 'delivered_manual'
             and self.product_id.service_tracking == 'task_new_project'
-            #added to maintain fixed price
+            #added to maintain fixed price usecase if no rate product sold
             and self.order_id.order_line.filtered(lambda r: r.product_id.seniority_level_id)
         )
     
-    """ @api.multi
-    def _is_so_with_rate(self):
-        #returns TRUE is there is a rate product in the related SO, this will be used to maintain the fixed price usecase
-        lines = self.order_id.order_line.ids
-        for line in lines:
-            if line.product_id.seniority_level_id:
-                print("RATE {}".format(line.product_id.seniority_level_id))
-                return True
-        print("NO RATES")
-        return False"""
-
     @api.multi
     def _compute_invoice_status(self):
         """Change invoice status for milestone line"""
