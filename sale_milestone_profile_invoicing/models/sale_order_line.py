@@ -147,8 +147,12 @@ class SaleOrderLine(models.Model):
     def _is_so_with_rate(self):
         #returns TRUE is there is a rate product in the related SO, this will be used to maintain the fixed price usecase
         products = self.order_id.order_line.mapped('product_id')
-        print("{}".format(products))
-        return True
+        if products.filtered(lambda r: r.seniority_level_id != False):
+            print("RATES")
+            return True
+        else:
+            print("NO RATES")
+            return False
 
     @api.multi
     def _compute_invoice_status(self):
