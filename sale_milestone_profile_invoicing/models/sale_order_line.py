@@ -76,7 +76,10 @@ class SaleOrderLine(models.Model):
     def _compute_amount_delivered_from_task(self):
         for line in self:
             total = 0
-            for ts in line._get_timesheet_for_amount_calculation():
+            #added to filter timesheet according to the invoiceable ones ()
+            line_ts = line._get_timesheet_for_amount_calculation().filtered(lambda r: r.id in r.so_line.order_id.timesheet_ids)
+            #for ts in line._get_timesheet_for_amount_calculation():
+            for ts in line_ts:
                 rate_line = ts.project_id.sale_line_employee_ids.filtered(
                     lambda r: r.employee_id == ts.employee_id
                 )
