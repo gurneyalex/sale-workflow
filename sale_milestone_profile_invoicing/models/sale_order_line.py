@@ -81,9 +81,10 @@ class SaleOrderLine(models.Model):
             #added to filter timesheet according to the invoiceable ones ()
             try:
                 line_ts = line._get_timesheet_for_amount_calculation().filter(lambda r: r.id in r.so_line.order_id.timesheet_ids)
+                _logger.info("TS FILTERED BY timsheet_ids {}".format(line_ts.mapped('name')))
             except:
                 line_ts = line._get_timesheet_for_amount_calculation()
-                _logger.info("TS NOT FILTERED BY timsheet_ids")
+                _logger.info("TS NOT FILTERED BY timsheet_ids {}".format(line_ts.mapped('name')))
             #for ts in line._get_timesheet_for_amount_calculation():
             for ts in line_ts:
                 _logger.info("TS {} {}".format(ts.id,ts))
