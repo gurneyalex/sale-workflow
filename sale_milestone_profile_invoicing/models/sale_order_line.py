@@ -83,7 +83,7 @@ class SaleOrderLine(models.Model):
                 line_ts = line._get_timesheet_for_amount_calculation().filter(lambda r: r.id in r.so_line.order_id.timesheet_ids)
             except:
                 line_ts = line._get_timesheet_for_amount_calculation()
-                _logger.info("TS NOT FILTERED BY timsheet_ids)
+                _logger.info("TS NOT FILTERED BY timsheet_ids")
             #for ts in line._get_timesheet_for_amount_calculation():
             for ts in line_ts:
                 _logger.info("TS {} {}".format(ts.id,ts))
