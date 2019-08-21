@@ -83,6 +83,7 @@ class SaleOrderLine(models.Model):
                 line_ts = line._get_timesheet_for_amount_calculation().filter(lambda r: r.id in r.so_line.order_id.timesheet_ids)
             except:
                 line_ts = line._get_timesheet_for_amount_calculation()
+                _logger.info("TS NOT FILTERED BY timsheet_ids)
             #for ts in line._get_timesheet_for_amount_calculation():
             for ts in line_ts:
                 _logger.info("TS {} {}".format(ts.id,ts))
@@ -160,7 +161,7 @@ class SaleOrderLine(models.Model):
         for line in self:
             if line._is_linked_to_milestone_product():
                 mapping = line.project_id.sale_line_employee_ids.filtered(
-                    lambda r: r.sale_line_id == line.id
+                    lambda r: r.sale_line_id.id == line.id
                 )
                 if not mapping:
                     if line.qty_delivered <= line.product_uom_qty:
