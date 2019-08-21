@@ -21,6 +21,7 @@
           <field name="amount_invoiced_from_task_company_currency" attrs="{'invisible': [('is_company_currency', '=', True)]}"/>
           <field name="company_currency_id" invisible="1"/>
           <field name="is_company_currency" invisible="1"/>
+          <field name="state" invisible="1"/>
         </group>
       </xpath>
     </field>
@@ -32,10 +33,10 @@
     <field name="inherit_id" ref="sale.view_order_line_tree"/>
     <field name="arch" type="xml">
       <field name="qty_delivered" position="after">
-        <field name="amount_delivered_from_task" attrs="{'invisible': [('state', 'in', ['draft','sent'])]}"/>
+        <field name="amount_delivered_from_task"/>
       </field>
       <field name="qty_invoiced" position="after">
-        <field name="amount_invoiced_from_task" attrs="{'invisible': [('state', 'in', ['draft','sent'])]}"/>
+        <field name="amount_invoiced_from_task"/>
       </field>
     </field>
   </record>
