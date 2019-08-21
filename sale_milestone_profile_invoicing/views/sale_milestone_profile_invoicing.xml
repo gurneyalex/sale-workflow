@@ -14,7 +14,7 @@
         <field name="amount_invoiced_from_task"/>
       </xpath>
       <xpath expr="//page[@name='order_lines']//form/group" position="inside">
-        <group attrs="{'invisible': [('display_type', '!=', False)]}">
+        <group attrs="{'invisible': ['|',('display_type', '!=', False),('state', 'in', ['draft','sent'])]}">
           <field name="amount_delivered_from_task"/>
           <field name="amount_delivered_from_task_company_currency" attrs="{'invisible': [('is_company_currency', '=', True)]}"/>
           <field name="amount_invoiced_from_task"/>
@@ -32,10 +32,10 @@
     <field name="inherit_id" ref="sale.view_order_line_tree"/>
     <field name="arch" type="xml">
       <field name="qty_delivered" position="after">
-        <field name="amount_delivered_from_task"/>
+        <field name="amount_delivered_from_task" attrs="{'invisible': [('state', 'in', ['draft','sent'])]}"/>
       </field>
       <field name="qty_invoiced" position="after">
-        <field name="amount_invoiced_from_task"/>
+        <field name="amount_invoiced_from_task" attrs="{'invisible': [('state', 'in', ['draft','sent'])]}"/>
       </field>
     </field>
   </record>
